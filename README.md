@@ -8,5 +8,5 @@ The repository is divided in chapters. Each one of them contains the examples fr
 ### Chapter 1: Tutorial
 It is a tutorial on the basic construct of Go, introduced through a dozen programs for everyday tasks like reading and writing files, formatting text, creating images, and communicating with Internet clients and servers.
 
-[Examples](./chapter1/examples)
-[Exercises](./chapter1/exercises)
+- [Examples](./chapter1/examples)
+- [Exercises](./chapter1/exercises)

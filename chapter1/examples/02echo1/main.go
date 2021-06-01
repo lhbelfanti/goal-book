@@ -1,3 +1,4 @@
+// License: https://creativecommons.org/licenses/by-nc-sa/4.0/
 // Page 4.
 
 // Echo1 prints its command-line arguments.

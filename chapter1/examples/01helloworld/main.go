@@ -1,3 +1,4 @@
+// License: https://creativecommons.org/licenses/by-nc-sa/4.0/
 // Page 1.
 
 // Helloworld is our first Go program.

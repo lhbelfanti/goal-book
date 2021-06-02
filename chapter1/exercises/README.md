@@ -17,3 +17,14 @@ Change the Lissajous program's color palette to green on black, for added authen
 
 #### Exercise 1.6
 Modify the Lissajous program to produce images in multiple colors by adding more values to `palette` and then displaying them by changing the third argument of `SetColorIndex` in some interesting way.
+
+#### Exercise 1.7
+The function call `io.Copy(dst, src)` reads from `src` and writes to `dst`. Use it instead of `ioutil.ReadAll` to copy the response body to `os.Stdout` without requiring a buffer large enough to hold the entire stream. Be sure to check the error result of `io.Copy`.
+
+#### Exercise 1.8
+Modify `fetch` to add the prefix `http://` to each argument URL if it is missing.
+
+You might want to use `strings.HasPrefix`.
+
+#### Exercise 1.9
+Modify `fetch` to also print the HTTP status code, found in `resp.Status`.

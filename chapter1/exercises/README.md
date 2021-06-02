@@ -28,3 +28,25 @@ You might want to use `strings.HasPrefix`.
 
 #### Exercise 1.9
 Modify `fetch` to also print the HTTP status code, found in `resp.Status`.
+
+#### Exercise 1.10
+Find a web site that produces a large amount of data. Investigate caching by running `fetchall` twice in succession to see whether the reported time changes much. Do you get the same content each time? Modify `fetchall` to print its output to a file so it can be examined.
+
+Answer:
+```
+The time is shorter:
+    0.45s    10187  https://golang.org
+    0.45s    10187  https://golang.org
+    1.05s    11367  https://godoc.org
+    1.11s    11367  https://godoc.org
+    1.11s elapsed
+```
+
+#### Exercise 1.11
+Try `fetchall` with longer argument list, such as samples from the top million web sites available at `alexa.com`. How does the program behave if a web site just doesn't respond? (Section 8.9 describes mechanisms for coping in such cases.)
+
+Answer:
+```
+If any web site doesn't respond the program get stuck and throws an error in the result.txt:
+'Get "http://www.microsoftonline.com": dial tcp: lookup www.microsoftonline.com: no such host'.
+```

@@ -1,0 +1,4 @@
+I like pizza
+I don't like pizza
+I like pizza
+I love pizza

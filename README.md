@@ -15,7 +15,7 @@ It is a tutorial on the basic construct of Go, introduced through a dozen progra
 - [Exercises](./chapter1/exercises)
 
 ### Chapter 2: Program Structure
-Describes the structural elements of a Go program - declarations, variables, new types, packages and files, and scope.
+Describes the structural elements of a Go program: declarations, variables, new types, packages and files, and scope.
 
 - [Examples](./chapter2/examples)
 - [Exercises](./chapter2/exercises)

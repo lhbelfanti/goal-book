@@ -14,6 +14,11 @@ It is a tutorial on the basic construct of Go, introduced through a dozen progra
 - [Examples](./chapter1/examples)
 - [Exercises](./chapter1/exercises)
 
+### Chapter 2: Program Structure
+Describes the structural elements of a Go program - declarations, variables, new types, packages and files, and scope.
+
+- [Examples](./chapter2/examples)
+- [Exercises](./chapter2/exercises)
 
 To satisfy the license from the book's [repository](https://github.com/adonovan/gopl.io), this repository is also licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 <br/>

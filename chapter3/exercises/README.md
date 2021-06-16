@@ -5,3 +5,6 @@ If the function `f` returns a non-finite `float64` value, the SVG file will cont
 
 #### Exercise 3.2
 Experiment with visualizations of other functions from the `math` package. Can you produce an egg box, moguls or a saddle?
+
+#### Exercise 3.3
+Color each polygon based on its height, so that the peaks are colored red `(#ff0000)` and the valleys blue `(#0000ff)`.

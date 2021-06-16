@@ -1,11 +1,11 @@
 // License: https://creativecommons.org/licenses/by-nc-sa/4.0/
-// Page 22.
 
 // Example:
 // go run main.go &
 // http://localhost:8000/?cycles=30;res=0.0008;delay=9;nframes=128;size=200
 
 // Server to show the lissajous gif
+// Exercise 1.12
 package main
 
 import (

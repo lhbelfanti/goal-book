@@ -1,6 +1,6 @@
 // License: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
-// Exercise 1.10
+// Exercise 1.11
 package main
 
 import (

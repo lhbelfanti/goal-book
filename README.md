@@ -20,6 +20,16 @@ Describes the structural elements of a Go program: declarations, variables, new 
 - [Examples](./chapter2/examples)
 - [Exercises](./chapter2/exercises)
 
+### Chapter 3: Basic Data Types
+Discusses numbers, booleans, strings, and constants, and explains how to process Unicode.
+
+- [Examples](./chapter3/examples)
+- [Exercises](./chapter3/exercises)
+
+
+#### License
 To satisfy the license from the book's [repository](https://github.com/adonovan/gopl.io), this repository is also licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 <br/>
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a>
+
+

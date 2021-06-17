@@ -1,7 +1,6 @@
 // License: https://creativecommons.org/licenses/by-nc-sa/4.0/
-// Page 61.
 
-// Mandelbrot emits a PNG image of the Mandelbrot fractal.
+// Exercise 3.5
 package main
 
 import (
@@ -45,7 +44,6 @@ const (
 )
 
 func main() {
-
 	filepath := os.Args[1]
 	fi, err := os.Create(filepath)
 	if err != nil {

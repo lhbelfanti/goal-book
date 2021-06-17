@@ -1,6 +1,6 @@
 // License: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
-// Exercise 3.1 (fourth approach)
+// Exercise 3.3 (fourth approach)
 package main
 
 import (

@@ -28,3 +28,9 @@ Doesn't satisfy the exercise. The valleys are not blue, and the low peaks are co
 ![Fourth approach](./colored4/colored4.svg)
 
 It does comply with the valley color requirement, it also complies the low peaks color requirement, but there is an error in the middle part of the high peak. Fixing that error would satisfy all the requirements.
+
+### Fifth Approach
+
+![Fifth approach](./colored5/colored5.svg)
+
+After researching a bit more, the problem was easier than I imagine. Simply, if z is higher than 0, color the polygon with red, if not, color with blue.

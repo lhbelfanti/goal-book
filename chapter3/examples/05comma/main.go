@@ -25,7 +25,6 @@ func main() {
 	}
 }
 
-//!+
 // comma inserts commas in a non-negative decimal integer string.
 func comma(s string) string {
 	n := len(s)

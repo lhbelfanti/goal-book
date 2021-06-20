@@ -53,3 +53,6 @@ Enhance `comma` so that it deals correctly with floating-point numbers and an op
 
 #### Exercise 3.12
 Write a function that reports whether two strings are anagrams of each other, that is, they contain the same letters in a different order.
+
+#### Exercise 3.13
+Write `const` declarations for KB, MB, up through YB as compactly as you can.

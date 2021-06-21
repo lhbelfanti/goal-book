@@ -26,6 +26,12 @@ Discusses numbers, booleans, strings, and constants, and explains how to process
 - [Examples](./chapter3/examples)
 - [Exercises](./chapter3/exercises)
 
+### Chapter 4: Composite Types
+Describes composite types, that is, types built up from simpler ones using arrays, maps, structs, and _slices_, Go's approach to dynamic lists.
+
+- [Examples](./chapter4/examples)
+- [Exercises](./chapter4/exercises)
+
 
 #### License
 To satisfy the license from the book's [repository](https://github.com/adonovan/gopl.io), this repository is also licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).

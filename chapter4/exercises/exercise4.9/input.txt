@@ -1,0 +1,470 @@
+The go oracle is a source analysis tool that answers questions about Go programs.  This document explains how to use it.  There is also a design document.
+
+How it helps
+Building it
+Command syntax
+Pointer Analysis Scope
+Editor integration
+Emacs
+Queries
+Notation for examples
+callees
+callers
+callstack
+describe
+freevars
+implements
+peers
+pointsto
+referrers
+Troubleshooting
+
+
+The oracle may be invoked directly from the command line, but more commonly it is invoked indirectly by your editor, which provides the tool with the current cursor position or selection, and the kind of query you wish to perform.
+How it helps
+The oracle answers many of the questions about elements of your program that come up all the time during a typical day of programming.  Questions such as:
+
+What is the type of this expression?  What are its methods?
+What’s the value of this constant expression?
+Where is the definition of this identifier?
+What are the exported members of this imported package?
+What are the free variables of the selected block of code?
+What interfaces does this type satisfy?
+Which concrete types in the package implement this interface?
+And:
+Where are the references to this identifier?
+What are the possible concrete types of this interface value?
+What are the possible callees of this dynamic call?
+What are the possible callers of this function?
+What objects might this pointer point to?
+Where will a value sent on this channel be received?
+Which statements could update this field/local/global/map/array/etc?
+Which functions might be called indirectly from this one?
+
+In many cases, using the oracle is as simple as selecting a region of source code, pressing a button, and receiving a precise answer to the query almost immediately.
+
+The first set of questions above can be answered using only local, modular reasoning by looking at the syntax tree, the types, or the members of a single package, but queries in the second set depend, in general, upon global properties of your application requiring more analytical effort---human or robot---to deduce.
+
+Building it
+Run the following command to build the oracle:
+  % go get golang.org/x/tools/cmd/oracle
+This will cause an executable named oracle to appear in your $GOPATH/bin directory.
+
+Command syntax
+The -help flag prints a summary of the command syntax.
+
+% oracle -help
+Go source code oracle.
+Usage: oracle [<flag> ...] <mode> <args> ...
+
+The -format flag controls the output format:
+        plain   an editor-friendly format in which every line of output
+                is of the form "pos: text", where pos is "-" if unknown.
+        json    structured data in JSON syntax.
+        xml     structured data in XML syntax.
+
+The -pos flag is required in all modes.
+
+The mode argument determines the query to perform:
+
+        callees         show possible targets of selected function call
+        callers         show possible callers of selected function
+        callstack       show path from callgraph root to selected function
+        definition      show declaration of selected identifier
+        describe        describe selected syntax: definition, methods, etc
+        freevars        show free variables of selection
+        implements      show 'implements' relation for selected type or method
+        peers           show send/receive corresponding to selected channel op
+        referrers       show all refs to entity denoted by selected identifier
+        what            show basic information about the selected syntax node
+
+
+Here’s an example invocation:
+  % oracle -pos=$GOROOT/src/pkg/path/match.go:#3238,#3242 -format=json describe
+This selection corresponds (at time of writing) to the package identifier utf8, and the oracle describes that package.
+
+In this command there are three inputs of interest:
+describe, the mode of the query.
+Each supported query is described in its own section below.
+-pos=..., the position of the cursor or selected syntax.
+The value of this flag may have the form file:#offset, for a byte offset within a file, orfile:#start,#end, for a selection, where [start, end) forms a half-open interval of byte indices.  Offsets are zero-based.
+json, the desired output format.  Supported formats include:
+plain, a human-readable format resembling typical compiler diagnostic output
+json, a structured data format specified at /x/tools/oracle/serial/serial.go
+xml, the same structured data in a different concrete syntax
+
+Pointer analysis scope
+Queries that use pointer analysis need a complete program.  callers, callees, and callstack use pointer analysis to construct a precise call graph; peers uses it to compute the relationship between channel sends and receives; and pointsto and whicherrs use it to discover what variables a pointer may point to.  For these queries, you must tell the oracle the main package of your application, and it will load source code for the complete transitive closure of those packages; it cannot analyse isolated libraries.  We call this the scope of the analysis.
+
+The scope may consist of several programs, such as a client and a server, or all the programs you routinely work on, or a set of libraries and their tests.  Bigger scopes are better because they cause the analysis to visit more code, although they may make the tool slower.  If a library function is not reachable in a given scope, the analysis can’t answer any questions about it, as if it’s not there.
+
+The scope of the analysis is specified as a set of package import paths, just like the arguments to go build or go test.  In the simplest case, this is just the main package of your program, or a package containing tests.  In example below, it’s the single package fmt, including its tests.  (It is not a main package.)
+
+% oracle -pos=$GOROOT/src/fmt/print.go:#3903 pointsto fmt
+	go/src/fmt/print.go:141:7: this *pp may point to these objects:
+	go/src/fmt/print.go:128:38:     new
+
+Editor integration
+The oracle may be invoked from any editor capable of running an external tool (such as a compiler) and displaying its output.  Since many editors treat file names appearing in compiler diagnostics as hyperlinks to the location of the error, the oracle prints its answer using a similar syntax when invoked with -format=plain.
+
+Bindings exist for Emacs (described below), Atom, Vim, Sublime Text, and Eclipse.  Please contact the author if you’d like to help connect the oracle to another editor such as Acme.
+Emacs
+
+Emacs looks for the oracle executable in $GOBIN, $GOPATH[0]/bin, or $GOROOT/bin.
+
+Within Emacs, load the oracle.el file using a command such as this:
+   M-x load-file $GOPATH/src/golang.org/x/tools/cmd/oracle/oracle.el
+Typically, users will add this command to their ~/.emacs startup configuration.
+
+Before you can run a query that uses pointer analysis, you must tell Emacs the set of packages in the analysis scope using this command:
+  M-x go-oracle-set-scope
+Use spaces to separate multiple packages.  The effect of go-oracle-set-scope persists across all oracle invocations until it is called again with a different value.
+
+To invoke the oracle, position the cursor on (or select) the syntax of interest and call the Emacs command go-oracle-xxx where xxx is the mode of the query.  For example:
+  M-x go-oracle-callees
+
+The most commonly used queries are describe and referrers, bound to the function keys F5 and F6 for convenience.  The other commands have longer key bindings, e.g., C-c C-o f for freevars.  To test your configuration, load a Go source file within your $GOPATH, select an identifier, and hit F5.  After a moment a window should appear with the results, looking something like this:
+
+Go Oracle
+▶	reference to var result string
+▶	defined here
+
+Queries
+This section describes the set of oracle queries.  See the Table of Contents for the complete list.
+
+Notation for examples
+In the examples, source code is shown in grey, user-selected source code is highlighted in yellow, and -format=plain tool output is colored blue.  In the actual tool output, each line is preceded by the source location most relevant to it, but to avoid distracting detail in the examples, the file names have been rendered as a ▶ symbol.  In some cases, location markers such as L1 have been added to make the source/results correspondence clear.
+
+For brevity, the -format=json and -format=xml outputs are not shown, but contain essentially all the same information as the plain output, broken down into a tree of structured data for ease of parsing.  Read the /x/tools/oracle/serial/serial.go documentation for more details.
+
+callees
+
+The callees query shows the possible call targets of the selected function call site.  The cursor or selection must be within a function call expression; the selection need not be exact.  This query uses pointer analysis to model the effects of dynamic function calls, so it requires a scope.
+
+Example: a callees query on the main dispatcher of net/http’s trivial webserver reveals all the handlers that are registered within the application (scope), which in this example is cmd/trace:
+
+$GOROOT/src/net/http/server.go:1316:
+func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request) {
+	f(w, r)
+}
+
+▶  this dynamic function call dispatches to:
+▶  	cmd/trace.httpGoroutines
+▶ 	cmd/trace.httpGoroutine
+▶  	cmd/trace.httpTrace
+▶  	cmd/trace.httpTraceViewerHTML
+▶  	cmd/trace.httpJsonTrace
+▶  	cmd/trace.httpIO
+▶  	cmd/trace.httpBlock
+▶  	cmd/trace.httpSyscall
+▶  	cmd/trace.httpSched
+▶  	cmd/trace.httpMain
+▶  	net/http.NotFound
+
+
+
+
+callers
+
+The callers query shows the possible callers of the function containing the selection. This query uses pointer analysis to model the effects of dynamic function calls, so it requires a scope.
+
+Example: httpMain is an HTTP handler function in the cmd/trace program, which is our scope in this example.  A callers query on that function reveals where the web server dispatches requests to it.
+
+$GOROOT/src/cmd/trace.go:118:
+// httpMain serves the starting page.
+func httpMain(w http.ResponseWriter, r *http.Request) {
+	w.Write(templMain)
+}
+
+
+▶	cmd/trace.httpMain is called from these 1 sites:
+▶  	dynamic function call from (net/http.HandlerFunc).ServeHTTP
+
+
+
+callstack
+
+The callstack query shows an arbitrary path from the root of the call graph to the function containing the selection.  This may be useful to understand how the function is reached in a given program. This query uses pointer analysis, to model the effects of dynamic function calls, so it requires a scope.
+
+Example: the result of a callstack query from the httpMain function in cmd/trace.
+
+$GOROOT/src//cmd/trace.go:118:
+// httpMain serves the starting page.
+	func httpMain(w http.ResponseWriter, r *http.Request) {
+w.Write(templMain)
+}
+
+▶ 	Found a call path from root to cmd/trace.httpMain
+▶ 	cmd/trace.httpMain
+▶ 	dynamic function call from (net/http.HandlerFunc).ServeHTTP
+▶ 	dynamic method call from (*net/http.ServeMux).ServeHTTP
+▶ 	dynamic method call from (net/http.serverHandler).ServeHTTP
+▶ 	static method call from (*net/http.conn).serve
+▶ 	static method call from (*net/http.Server).Serve
+▶ 	static method call from net/http.Serve
+▶ 	static function call from cmd/trace.main
+
+
+The precision and usefulness of call stack information varies considerably, especially if the call path contains a greater degree of dynamic calls.  The chosen callstack might be infeasible, that is, never occurring during any real execution.
+
+
+describe
+
+The describe query shows various properties of the selected syntax: its syntactic kind, the type of an expression, the value of a constant expression, the size, alignment, method set, and interfaces of a type, the declaration of an identifier, and so on.  Almost any piece of syntax may be described, and the oracle will try to print all the useful information it can.
+
+Example: a describe query on a field selection expression in the net/http package.
+
+$GOROOT/src/net/http/server.go:2084:
+if req.Body == nil {
+	req.Body = eofReader
+}		...
+
+
+$GOROOT/src/net/http/request.go:
+	type Request struct {
+		…
+		Body io.ReadCloser // L1
+
+▶	reference to var Body io.ReadCloser
+▶ L1	defined here		Body io.ReadCloser
+
+
+The response to this query contains the kind of the identifier (var, for a struct field), its type (io.ReadCloser), and the location of its definition.
+
+Example: from package net.
+
+$GOROOT/src/net/dnsmsg.go:92:
+func (h *dnsHeader) Walk(f func(v interface{}, name, tag string) bool) bool {
+		return f(&h.Id, "Id", "") && …
+
+▶	unary & operation of type *uint16
+
+
+Example: an excerpt of a describe query on a package name.  Essentially the same results are obtained when the selection is the import path or when it is the package identifier.
+
+import "net/url"
+var u url.URL
+
+▶	import of package "net/url"
+▶		type  Error			struct{...}
+▶			method (*Error) Error() string
+▶		type  EscapeError		string
+▶			method (EscapeError) Error() string
+▶		func  Parse			func(rawurl string) (url *URL, err error)
+▶		func  ParseQuery 		func(query string) (m Values, err error)
+▶		func  ParseRequestURI	func(rawurl string) (url *URL, err error)
+▶		func  QueryEscape		func(s string) string
+▶		func  QueryUnescape		func(s string) (string, error)
+▶		type  URL			struct{...}
+▶			method (*URL) IsAbs() bool
+▶			method (*URL) Parse(ref string) (*URL, error)
+▶			method (*URL) Query() Values
+			...
+The description of a package includes all its exported members, their types, methods, and values (for constants).  If the current package is described (by selecting the package declaration package p), the description includes the non-exported members too.
+
+
+
+
+
+freevars
+
+The freevars query enumerates the free variables of the selection.  “Free variables” is a technical term meaning the set of variables that are referenced but not defined within the selection, or loosely speaking, its inputs.
+
+This information is useful if you’re considering whether to refactor the selection into a function of its own, as the free variables would be the necessary parameters of that function.  It’s also useful when you want to understand what the inputs are to a complex block of code even if you don’t plan to change it.
+
+To make the results more useful, the output of the query differs slightly from the textbook definition of free variables:
+the output does not report any names defined at package level, since they would not need to be passed as parameters to a function;
+for each free struct variable, the output reports each distinct access path (e.g. s.x.y) as a free variable.
+the output also reports references to free constants and types.
+
+Example: the free variables of the body of a loop in the strings package.
+
+$GOROOT/src/strings/search.go:79:
+	// Second pass: find repeats of pattern's suffix starting from the front.
+	for i := 0; i < last; i++ {
+		lenSuffix := longestCommonSuffix(pattern, pattern[1:i+1])
+		if pattern[i-lenSuffix] != pattern[last-lenSuffix] {
+			// (last-i) is the shift, and lenSuffix is len(suffix).
+			f.goodSuffixSkip[last-lenSuffix] = lenSuffix + last - i
+		}
+	}
+
+▶	Free identifiers:
+▶	var f.goodSuffixSkip []int	f := &stringFinder{
+▶	var i int			for i := 0; i < last; i++ {
+▶	var last int			last := len(pattern) - 1
+▶	var pattern string		func makeStringFinder(pattern string) *stringFinder {
+
+(The grey text indicates the code that each line of output links to.)
+
+implements
+
+The implements query shows the implements relation for the selected type: the interfaces it implements, and for an interface, the named types and pointer-to-named types that implement it.  It only reports pairs of types within the same package.
+
+Example: an excerpt of the implements relation of the io package.
+
+$GOROOT/go/src/io/io.go:25:
+type RuneScanner interface {
+
+▶	interface type io.RuneReader
+▶		is implemented by pointer type *bufio.Reader
+▶		is implemented by pointer type *bytes.Buffer
+▶		is implemented by pointer type *bytes.Reader
+▶		is implemented by pointer type *encoding/json.encodeState
+▶		is implemented by pointer type *fmt.ss
+▶		is implemented by pointer type *strings.Reader
+▶		is implemented by struct type bufio.ReadWriter
+▶		is implemented by struct type encoding/asn1.forkableWriter
+▶	 	is implemented by interface type fmt.ScanState
+▶		implements fmt.runeUnreader
+▶		implements io.RuneReader
+
+The implements query can also be applied to a method, in which case the corresponding method for each of the types above is shown instead, if present.
+
+type RuneScanner interface {
+		RuneReader
+		UnreadRune() error
+	}
+
+▶  abstract method func (RuneScanner).UnreadRune() error
+▶  	is implemented by method (*bufio.Reader).UnreadRune
+▶  	is implemented by method (*bytes.Buffer).UnreadRune
+▶  	is implemented by method (*bytes.Reader).UnreadRune
+▶  	is implemented by method (*encoding/json.encodeState).UnreadRune
+▶  	is implemented by method (*fmt.ss).UnreadRune
+▶  	is implemented by method (*strings.Reader).UnreadRune
+▶  	is implemented by method (bufio.ReadWriter).UnreadRune
+▶  	is implemented by method (math/big.byteReader).UnreadRune
+▶  	is implemented by method (fmt.ScanState).UnreadRune
+▶  	implements method (fmt.runeUnreader).UnreadRune
+
+
+
+
+peers
+
+The peers query shows the set of possible sends/receives on the channel operand of the selected send or receive operation; the selection must be a <- token.  This query uses pointer analysis, so you must specify a scope.
+
+Example: a peers query on a receive operation in the net/http package.  The scope was net/http (tests).
+
+$GOROOT/src/net/http/server.go:1970:
+func (h *timeoutHandler) ServeHTTP(w ResponseWriter, r *Request) {
+	done := make(chan bool, 1)
+	tw := &timeoutWriter{w: w}
+	go func() {
+		h.handler.ServeHTTP(tw, r)
+		done <- true
+	}()
+
+
+▶	This channel of type chan bool may be:
+▶ 		allocated here		done := make(chan bool, 1)
+▶ 		sent to, here			done <- true
+▶ 		received from, here		case <-done:      in ServeHTTP
+
+
+Example: a different channel, also of type chan bool, in the same file.
+
+$GOROOT/src/net/http/server.go:189:
+func (c *conn) noteClientGone() {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if c.closeNotifyc != nil && !c.clientGone {
+		c.closeNotifyc <- true
+	}
+	c.clientGone = true
+}
+
+
+▶	This channel of type chan bool may be:
+▶ 		allocated here		c.closeNotifyc = make(chan bool, 1)
+▶ 		sent to, here			c.closeNotifyc <- true
+▶ 		received from, here		<-cc	in net/http.TestCloseNotifier
+
+
+
+
+
+pointsto
+
+The pointsto query shows the set of possible objects to which a pointer may point.  It also works for other reference types, like slices, functions, maps, and channels.  This query uses pointer analysis, so you must specify a scope.
+
+Example: a pointsto query on the same field selection expression in net/http that we saw above in describe.  The scope was net/http (tests).
+
+$GOROOT/src/net/http/server.go:2084:
+	if req.Body == nil {
+		req.Body = eofReader
+	}
+
+▶	this io.ReadCloser may contain these dynamic types:
+ 		*struct{*strings.Reader; io.Closer}, may point to:
+▶			complit // var eofReader = &struct { *strings.Reader; io.Closer }{ ...
+▶		*net/http.body, may point to:
+▶			complit // t.Body = &body{src: newChunkedReader(r), hdr: msg, r: r, closing: t.Close}
+▶			complit // t.Body = &body{src: io.LimitReader(r, realLength), closing: t.Close}
+▶			complit // t.Body = &body{src: r, closing: t.Close}
+▶		*net/http.expectContinueReader, may point to:
+▶			complit // req.Body = &expectContinueReader{readCloser: req.Body, resp: w}
+▶		...
+
+The response to this query contains the type of the expression, the location of the definition of the struct field, the list of concrete types that it (an interface) may contain, and for each of those concrete types, all of which are pointers, the set of objects to which it may point, with source locations where available.  (complit indicates the object allocated by a composite literal.  The grey comments show the code it refers to.)  This query uses pointer analysis, so you must specify a scope.
+
+Example: from package net, with scope net/http:
+
+$GOROOT/src/pkg/net/dnsmsg.go:92:
+func (h *dnsHeader) Walk(f func(v interface{}, name, tag string) bool) bool {
+	return f(&h.Id, "Id", "") && …
+
+func (dns *dnsMsg) Pack() (msg []byte, ok bool) {
+	var dh dnsHeader // L1
+
+func (dns *dnsMsg) Unpack(msg []byte) bool {
+	var dh dnsHeader // L2
+
+▶	this *uint16 may point to these objects:
+▶ L1		dh.Id // var dh dnsHeader  in Pack
+▶ L2		dh.Id // var dh dnsHeader  in Unpack
+
+The syntax “dh.Id” denotes the .Id field of the object created by the identifier dh.  In fact there are two distinct local variables, both called dh but belonging to different functions, into which this expression may point.
+
+
+
+
+referrers
+
+The referrers query shows the set of identifiers that refer to the same object as does the selected identifier, scanning all the packages within $GOROOT or $GOPATH.
+
+Example: find all references to a function parameter v defined in the fmt package.
+
+$GOROOT/go/src/fmt/print.go:409:
+func (p *pp) fmtUint64(v uint64, verb rune, goSyntax bool) {
+	switch verb {
+	case 'b':
+		p.fmt.integer(int64(v), 2, unsigned, ldigits)  // L1
+	case 'c':
+		p.fmtC(int64(v))  // L2
+	case 'd':
+		p.fmt.integer(int64(v), 10, unsigned, ldigits) // L3
+	…
+
+▶	defined here as var v uint64
+▶ L1	referenced here
+▶ L2	referenced here
+▶ L3	referenced here
+	...
+
+
+Troubleshooting
+
+The oracle says that function F is reachable, but I know that it’s not.
+The oracle says that pointer P can point to label L, but I know that it cannot.
+
+This class of errors arise from “false positives” or imprecision in the pointer analysis.  A sound pointer analysis may make conservative approximations when it isn’t capable of fully capturing the behaviour of your program.  These kinds of false reports are mostly not considered bugs, although of course if they are too numerous, the usefulness of the tool may be diminished.
+
+The oracle says that function F is dead code, but I know that it’s not.
+The oracle says that pointer P may not point to label L, but I know that it can.
+
+This class of errors arise from “false negatives” or unsoundness of the pointer analysis, and they generally indicate a bug.  Reflection is not currently supported, leading to unsound results (missing edges in the call graph and underestimates of points-to sets); this will be fixed in due course.  unsafe.Pointer conversions are also not supported, and may never be.
+
+Don’t forget that the pointer analysis only looks at code reachable in the analysis scope that you specified, e.g. the entire program whose ‘main’ package was named on the command line.  Even a large Go program might use only small parts of some of the libraries it depends upon, so pointer analysis queries about the unused parts will return null results.  This is correct, and the expected behaviour.  Specifying a larger scope (more main packages and tests) can improve the analytical coverage of your libraries.
+

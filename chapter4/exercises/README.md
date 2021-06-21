@@ -20,3 +20,6 @@ Write an in-place function that squashes each run of adjacent Unicode spaces (se
 
 #### Exercise 4.7
 Modify `reverse` to reverse the characters of a `[]byte` slice that represents a UTF-8-encoded string, in place. Can you do it without allocating new memory?
+
+#### Exercise 4.8
+Modify `charcount` to count letters, digits, and so on in their Unicode categories, using functions like `unicode.IsLetter`.

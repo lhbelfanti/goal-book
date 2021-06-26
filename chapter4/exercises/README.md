@@ -29,3 +29,6 @@ Write a program `wordfreq` to report the frequency of each word in an input text
 
 #### Exercise 4.10
 Modify `issues` to report the results in age categories, say less than a month old, less than a year old, and more than a year old.
+
+#### Exercise 4.11
+Build a tool that lets users create, read, update, and delete GitHub issues from the command line, invoking their preferred text editor when substantial text input is required.

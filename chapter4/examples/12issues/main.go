@@ -26,8 +26,8 @@ func main() {
 
 /*
 //text output
-$ go build gopl.io/ch4/issues
-$ ./issues repo:golang/go is:open json decoder
+$ go build main.go
+$ ./main repo:golang/go is:open json decoder
 60 issues:
 #33416   bserdar encoding/json: This CL adds Decoder.InternKeys
 #43716 ggaaooppe encoding/json: increment byte counter when using decode

@@ -26,3 +26,6 @@ Modify `charcount` to count letters, digits, and so on in their Unicode categori
 
 #### Exercise 4.9
 Write a program `wordfreq` to report the frequency of each word in an input text file. Call `input.Split(bufio.ScanWords)` before the first call to `Scan` to break the input into words instead of lines.
+
+#### Exercise 4.10
+Modify `issues` to report the results in age categories, say less than a month old, less than a year old, and more than a year old.

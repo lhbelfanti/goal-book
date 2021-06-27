@@ -32,3 +32,6 @@ Modify `issues` to report the results in age categories, say less than a month o
 
 #### Exercise 4.11
 Build a tool that lets users create, read, update, and delete GitHub issues from the command line, invoking their preferred text editor when substantial text input is required.
+
+#### Exercise 4.12
+The popular web comic `xkcd` has a `JSON` interface. For example, a request to `http://xkcd.com/571/info.0.json` produces a detailed description of comic 571, one of many favorites. Download each URL (once!) and build an offline index. Write a tool `xkcd` that, using this index, prints the URL and transcript of each comic that matches a search term provided on the command line.

@@ -89,21 +89,6 @@ func GetIssue(owner string, repo string, number string) (*Issue, error) {
 	return &issue, nil
 }
 
-func GetIssues(owner string, repo string) ([]Issue, error) {
-	url := strings.Join([]string{APIURL, "repos", owner, repo, "issues"}, "/")
-	resp, err := get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	var issues []Issue
-	if err := json.NewDecoder(resp.Body).Decode(&issues); err != nil {
-		return nil, err
-	}
-	return issues, nil
-}
-
 func EditIssue(owner, repo, number string, fields map[string]string) (*Issue, error) {
 	buf := &bytes.Buffer{}
 	encoder := json.NewEncoder(buf)

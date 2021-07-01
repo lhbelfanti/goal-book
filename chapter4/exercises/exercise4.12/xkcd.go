@@ -102,16 +102,17 @@ func createIndex(filename string) error {
 	workers := 100
 
 	comicNums := make(chan int, workers)
-	done := make(chan int, 0)
 	lock := sync.RWMutex{}
 
+	wg := sync.WaitGroup{}
 	for i := 1; i < workers; i++ {
-		go downloader(comicNums, comics, done, &lock)
+		wg.Add(1)
+		go downloader(comicNums, comics, &wg, &lock)
 	}
 
 	go dispatcher(comicNums, max)
 
-	<-done
+	wg.Wait()
 
 	file, err := os.Create(filename)
 	if err != nil {
@@ -137,11 +138,12 @@ func dispatcher(comicNums chan int, max int) {
 	close(comicNums)
 }
 
-func downloader(comicNums chan int, comics map[string]Comic, done chan int, lock *sync.RWMutex) {
+func downloader(comicNums chan int, comics map[string]Comic, wg *sync.WaitGroup, lock *sync.RWMutex) {
 	for n := range comicNums {
 		comic, err := getComic(n)
 		if err != nil {
 			log.Printf("Can't get comic %d: %s", n, err)
+			wg.Done()
 			continue
 		}
 
@@ -151,8 +153,8 @@ func downloader(comicNums chan int, comics map[string]Comic, done chan int, lock
 		lock.Unlock()
 
 	}
-	fmt.Println("Downloader goroutine finished")
-	done <- 1
+	fmt.Printf("Downloader goroutine finished\n")
+	wg.Done()
 }
 
 func getComic(n int) (Comic, error){

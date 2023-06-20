@@ -1,3 +1,14 @@
+<p align="center">
+  <img src="media/goal-book-logo.png" width="100" alt="Repository logo" />
+</p>
+<h3 align="center">Goal Book</h3>
+<p align="center">Learning Go from the book "The Go Programming Language" </br> (by Alan A. A. Donovan & Brian W. Kernighan)<p>
+<p align="center">
+    <img src="https://img.shields.io/github/repo-size/lhbelfanti/goal-book?label=Repo%20size" alt="Repo size" />
+    <img src="https://img.shields.io/github/license/lhbelfanti/goal-book?label=License" alt="License" />
+</p>
+
+---
 # GOAL (Book version)
 
 The GOAL of this project is to continue learning Go by doing the exercises of the book ["The Go Programming Language"](http://www.gopl.io/) (by Alan A. A. Donovan & Brian W. Kernighan).
@@ -32,10 +43,7 @@ Describes composite types, that is, types built up from simpler ones using array
 - [Examples](./chapter4/examples)
 - [Exercises](./chapter4/exercises)
 
+---
+## License
 
-#### License
-To satisfy the license from the book's [repository](https://github.com/adonovan/gopl.io), this repository is also licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-<br/>
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a>
-
-
+To satisfy the license from the book's [repository](https://github.com/adonovan/gopl.io), this repository is also licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/)

@@ -23,7 +23,7 @@ The book's examples are numbered. Each one of the folder that contains the examp
 It is a tutorial on the basic construct of Go, introduced through a dozen programs for everyday tasks like reading and writing files, formatting text, creating images, and communicating with Internet clients and servers.
 
 - [Examples](./chapter1/examples)
-- <div style="display: flex; align-items: center;">
+- <div style="display: flex; align-items: center; height: 40px">
     <a href="./chapter1/exercises">Exercises</a>
     &nbsp; :arrow_right: &nbsp;
     <img src="https://progress-bar.dev/100/?title=Progress" alt="Progress" />

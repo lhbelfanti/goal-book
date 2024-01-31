@@ -16,90 +16,139 @@ The GOAL of this project is to continue learning Go by doing the exercises of th
 
 The repository is divided in chapters. Each one of them contains the examples from the book and the resolution of the exercises proposed by the book.
 
-The book's examples are numbered. Each one of the folder that contains the example starts with a number that specifies the order in which the example appeared in the book.
+<img src="https://progress-bar.dev/32/?title=Exercises progress 44/135" alt="Progress" />
 
+The book's examples are numbered. Each one of the folder that contains the example starts with a number that specifies the order in which the example appeared in the book.
 
 ### Chapter 1: Tutorial
 It is a tutorial on the basic construct of Go, introduced through a dozen programs for everyday tasks like reading and writing files, formatting text, creating images, and communicating with Internet clients and servers.
 
 - [Examples](./chapter1/examples)
-- <div style="display: flex; align-items: center; height: 40px">
+- <div style="display: flex; align-items: center;">
     <a href="./chapter1/exercises">Exercises</a>
     &nbsp; :arrow_right: &nbsp;
-    <img src="https://progress-bar.dev/100/?title=Progress" alt="Progress" />
+    <img src="https://progress-bar.dev/100/?title=Progress 12/12" alt="Progress" />
 </div>
 
 ### Chapter 2: Program Structure
 Describes the structural elements of a Go program: declarations, variables, new types, packages and files, and scope.
 
 - [Examples](./chapter2/examples)
-- [Exercises](./chapter2/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter2/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/100/?title=Progress 5/5" alt="Progress" />
+</div>
 
 ### Chapter 3: Basic Data Types
 Discusses numbers, booleans, strings, and constants, and explains how to process Unicode.
 
 - [Examples](./chapter3/examples)
-- [Exercises](./chapter3/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter3/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/100/?title=Progress 13/13" alt="Progress" />
+</div>
 
 ### Chapter 4: Composite Types
 Describes composite types, that is, types built up from simpler ones using arrays, maps, structs, and _slices_, Go's approach to dynamic lists.
 
 - [Examples](./chapter4/examples)
-- [Exercises](./chapter4/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter4/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/100/?title=Progress 14/14" alt="Progress" />
+</div>
 
 ### Chapter 5: Functions
 Explains functions: recursion, multiple return values, errors, function values, anonymous functions, variadic functions, deferred function calls, panic and recover.
 
 - [Examples](./chapter5/examples)
-- [Exercises](./chapter5/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter5/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/0/?title=Progress 0/19" alt="Progress" />
+</div>
 
 ### Chapter 6: Methods
 Explains methods: method declarations, methods with a pointer receiver, composing types by struct embedding, method values and expressions, an example of a 'bit vector type' and encapsulation
 
 - [Examples](./chapter6/examples)
-- [Exercises](./chapter6/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter6/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/0/?title=Progress 0/5" alt="Progress" />
+</div>
 
 ### Chapter 7: Interfaces
 Describes: interfaces as contracts, interface types, interface satisfaction, parsing flags with `flag.Value`, interface values, sorting with `sort.Interface`, the `http.Handler` interface, the `error` interface, an example about 'expression evaluator', type assertions, discriminating errors with type assertions, querying behaviour with interface type assertion, type switches, an example of a 'Token-Based XML Decoding' and gives a few words of advice.
 
 - [Examples](./chapter7/examples)
-- [Exercises](./chapter7/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter7/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/0/?title=Progress 0/18" alt="Progress" />
+</div>
 
 ### Chapter 8: Goroutines and Channels
 Talks about goroutines, channels, looping in parallel, multiplexing with a select and cancellation of the goroutines. It has many examples: 'Concurrent Clock Server', 'Concurrent Echo Server', 'Concurrent Web Crawler', 'Concurrent Directory Traversal' and a 'Chat Server'.
 
 - [Examples](./chapter8/examples)
-- [Exercises](./chapter8/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter8/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/0/?title=Progress 0/15" alt="Progress" />
+</div>
 
 ### Chapter 9: Concurrency with Shared Variables
 Explains: race conditions, mutual exclusion using `sync.Mutex`, read/write mutexes using `sync.RWMutex`, memory synchronization, lazy initialization with `sync.Once`, the race detector, goroutines and threads, and gives an example of a 'Concurrent Non-Blocking Cache'.
 
 - [Examples](./chapter9/examples)
-- [Exercises](./chapter9/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter9/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/0/?title=Progress 0/6" alt="Progress" />
+</div>
 
 ### Chapter 10: Packages and the Go Tool
 Introduces the concepts of: import paths, the package declaration, import declarations, blank imports, packages and naming and the Go tool.
 
 - [Examples](./chapter10/examples)
-- [Exercises](./chapter10/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter10/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/0/?title=Progress 0/4" alt="Progress" />
+</div>
 
 ### Chapter 11: Testing
 Describes everything about testing: the `go test` tool, `Test` functions, coverage, `Benchmark` functions, profiling and `Example` functions.
 
 - [Examples](./chapter11/examples)
-- [Exercises](./chapter11/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter11/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/0/?title=Progress 0/7" alt="Progress" />
+</div>
 
 ### Chapter 12: Reflection
 Talks about "Why reflection?" and describes: `reflect.Type` and `reflect.Value`, `Display` (a recursive value printer), setting variables with `reflect.Value`, accessing struct field tags, displaying methods of a type, and it gives a big caution message. It also has some examples: 'Encoding S-Expressions' and 'Decoding S-Expressions'.
 
 - [Examples](./chapter12/examples)
-- [Exercises](./chapter12/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter12/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/0/?title=Progress 0/13" alt="Progress" />
+</div>
 
 ### Chapter 13: Low-Level Programming
 In this chapter the authors explore: `unsafe.Sizeof`, `Alignof` and `Offsetof`, `unsafe.Pointer`, Calling C Code with `cgo` and give a big warning about this whole topic. It also has an example: 'Deep Equivalence'.
 
 - [Examples](./chapter13/examples)
-- [Exercises](./chapter13/exercises)
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter13/exercises">Exercises</a>
+    &nbsp; :arrow_right: &nbsp;
+    <img src="https://progress-bar.dev/0/?title=Progress 0/4" alt="Progress" />
+</div>
 
 ---
 ## License

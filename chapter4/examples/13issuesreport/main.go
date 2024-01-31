@@ -46,7 +46,6 @@ func noMust() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//!-parse
 	result, err := github.SearchIssues(os.Args[1:])
 	if err != nil {
 		log.Fatal(err)

@@ -23,9 +23,11 @@ The book's examples are numbered. Each one of the folder that contains the examp
 It is a tutorial on the basic construct of Go, introduced through a dozen programs for everyday tasks like reading and writing files, formatting text, creating images, and communicating with Internet clients and servers.
 
 - [Examples](./chapter1/examples)
-- [Exercises](./chapter1/exercises) :arrow_right: ![100%](https://progress-bar.dev/100/?title=Progress)
-
-
+- <div style="display: flex; align-items: center;">
+    <a href="./chapter1/exercises">Exercises</a>
+    &nbsp;:arrow_right:&nbsp;
+    <img src="https://progress-bar.dev/100/?title=Progress" alt="Progress" />
+</div>
 
 ### Chapter 2: Program Structure
 Describes the structural elements of a Go program: declarations, variables, new types, packages and files, and scope.

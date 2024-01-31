@@ -25,7 +25,7 @@ It is a tutorial on the basic construct of Go, introduced through a dozen progra
 - [Examples](./chapter1/examples)
 - <div style="display: flex; align-items: center;">
     <a href="./chapter1/exercises">Exercises</a>
-    &nbsp;:arrow_right:&nbsp;
+    &nbsp; :arrow_right: &nbsp;
     <img src="https://progress-bar.dev/100/?title=Progress" alt="Progress" />
 </div>
 

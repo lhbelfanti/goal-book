@@ -23,7 +23,8 @@ The book's examples are numbered. Each one of the folder that contains the examp
 It is a tutorial on the basic construct of Go, introduced through a dozen programs for everyday tasks like reading and writing files, formatting text, creating images, and communicating with Internet clients and servers.
 
 - [Examples](./chapter1/examples)
-- [Exercises](./chapter1/exercises)
+- [Exercises](./chapter1/exercises) :arrow_right: ![100%](https://progress-bar.dev/100/?title=Progress)
+
 
 
 ### Chapter 2: Program Structure
